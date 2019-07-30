@@ -12,6 +12,11 @@ class CoordinateSystem extends SingleChildRenderObjectWidget{
   @override
   RenderObject createRenderObject(BuildContext context) {
     // TODO: implement createRenderObject
-    return null;
+    return new RenderCoordinateSystem(systemSize: systemSize,systemType: systemType);
+  }
+
+  void updateRenderObject(BuildContext context, RenderCoordinateSystem render){
+    render.systemSize = this.systemSize;
+    render.systemType = this.systemType;
   }
 }

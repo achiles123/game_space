@@ -13,6 +13,7 @@ SpriteSheet _spriteSheetUI;
 ImageMap _imageMap;
 PersistantGameState _gameState;
 GlobalKey<NavigatorState> _navigatorKey = new GlobalKey<NavigatorState>();
+double bootSpeed = 1;
 typedef void SelectTabCallback(int index);
 typedef void UpgradePowerUpCallBack(PowerUpType type);
 
@@ -23,9 +24,11 @@ AssetBundle _initBundle(){
 }
 
 Future main() async {
+  WidgetsFlutterBinding.ensureInitialized();
   SystemChrome.setEnabledSystemUIOverlays(<SystemUiOverlay>[]);
-  _imageMap = new ImageMap(_bundle);
   _gameState = new PersistantGameState();
+  await _gameState.load();
+  _imageMap = new ImageMap(_bundle);
   await _imageMap.load(<String>[
     'assets/nebula.png',
     'assets/sprites.png',
@@ -69,14 +72,16 @@ class GameDemoState extends State<GameDemo> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       home: Title(
         title: "",
+        color: const Color(0xFF9900FF),
         key: _navigatorKey,
         child: Navigator(
           onGenerateRoute: (routes){
             switch(routes.name){
               case "/game":break;
-              default:_buildMainSceneRoute();
+              default:return _buildMainSceneRoute();
             }
           },
         ),
@@ -87,7 +92,21 @@ class GameDemoState extends State<GameDemo> {
 
   PageRoute _buildMainSceneRoute(){
     return new MaterialPageRoute(builder: (context){
+      return MainScense(
+        gameState: _gameState,
+        onUpgradeLaser: (){
 
+        },
+        onUpgradePowerUp: (powerType){
+
+        },
+        onStartLevelUp: (){
+
+        },
+        onStartLevelDown: (){
+
+        },
+      );
     });
   }
   
@@ -114,6 +133,67 @@ class MainScenseState extends State<MainScense>{
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
-    return null;
+    return new CoordinateSystem(
+      systemSize: Size(360.0,360.0),
+      child: DefaultTextStyle(
+        style: TextStyle(fontFamily: "Orbitron", fontSize:20.0),
+        child: GestureDetector(
+          onTap: (){
+            setState(() {
+              bootSpeed += 0.1; 
+            });
+          },
+          child: Stack(
+            children: <Widget>[
+                MainScenseBackground()
+            ],
+          ),
+        )
+        
+        
+      ),
+    );
+  }
+}
+
+class MainScenseBackground extends StatefulWidget{
+  @override
+  State<StatefulWidget> createState() {
+    // TODO: implement createState
+    return new MainScenseBackgroundState();
+  }
+}
+
+class MainScenseBackgroundState extends State<MainScenseBackground>{
+  MainScenseBackgroundNode _backgroundNode;
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    _backgroundNode = new MainScenseBackgroundNode();
+  }
+  @override
+  Widget build(BuildContext context) {
+    // TODO: implement build
+    return new SpriteWidget(_backgroundNode,SpriteBoxTransformMode.fixedWidth);
+  }
+}
+
+class MainScenseBackgroundNode extends NodeWithSize{
+  RepeatImage _background;
+  RepeatImage _nebula;
+  MainScenseBackgroundNode() : super(new Size(320.0,320.0)){
+    assert(_spriteSheet.image != null);
+    _background = new RepeatImage(_imageMap["assets/starfield.png"]);
+    addChild(_background);
+
+    _nebula = new RepeatImage(_imageMap["assets/nebula.png"]);
+    addChild(_nebula);
+  }
+  
+  @override
+  void update(double dt){
+    _background.move(bootSpeed*10.0*dt);
+    _nebula.move(bootSpeed*100.0*dt);
   }
 }

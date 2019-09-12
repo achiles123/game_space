@@ -5,12 +5,14 @@ import 'package:game_space/LibraryGame.dart';
 import 'package:path_provider/path_provider.dart';
 
 class PersistantGameState{
-  int coin;
+  int coin = 0;
   List<int> _powerupLevels = <int>[0, 0, 0, 0];
   int _currentStartingLevel;
   int maxStartingLevel = 100;
   int laserLevel;
   int maxLaserLevel = 100;
+  int lastScore = 0;
+  int bestScore = 0;
   int get currentStartingLevel => _currentStartingLevel;
   set currentStartingLevel(int level){
     if(level <= maxStartingLevel && level >=0 ){
@@ -34,6 +36,8 @@ class PersistantGameState{
       _currentStartingLevel = data["currentStartingLevel"];
       maxStartingLevel = data["maxStartingLevel"];
       laserLevel = data["laserLevel"];
+      lastScore = data["lastScore"];
+      bestScore = data["bestScore"];
     }
   }
 
@@ -46,6 +50,8 @@ class PersistantGameState{
       "currentStartingLevel":_currentStartingLevel,
       "maxStartingLevel":maxStartingLevel,
       "laserLevel":laserLevel,
+      "lastScore":lastScore,
+      "bestScore":bestScore,
     };
     JsonEncoder encoder = new JsonEncoder();
     String json = encoder.convert(data);

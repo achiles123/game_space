@@ -145,7 +145,16 @@ class MainScenseState extends State<MainScense>{
           },
           child: Stack(
             children: <Widget>[
-                MainScenseBackground()
+                MainScenseBackground(),
+                Column(
+                  children: <Widget>[
+                    SizedBox(
+                      width: 320,
+                      height: 120,
+                      child: TopBar(_gameState,_spriteSheetUI),
+                    ),
+                  ],
+                ),
             ],
           ),
         )
@@ -154,6 +163,57 @@ class MainScenseState extends State<MainScense>{
       ),
     );
   }
+}
+
+class TopBar extends StatefulWidget{
+  PersistantGameState _gameState;
+  SpriteSheet _uiSheet;
+  TopBar(this._gameState,this._uiSheet);
+
+  @override
+  State<StatefulWidget> createState() {
+    // TODO: implement createState
+    return new TopBarState();
+  }
+  
+}
+
+class TopBarState extends State<TopBar>{
+  @override
+  Widget build(BuildContext context) {
+    // TODO: implement build
+    return Stack(
+      children: <Widget>[
+        Positioned(
+          top: 20,
+          left: 10,
+          child: Text("Last Score",style: labelDarkStyle,),
+        ),
+        Positioned(
+          top: 20,
+          right: 5,
+          child: Text("${widget._gameState.lastScore}",style: labelDarkStyle),
+        ),
+        Positioned(
+          top: 55,
+          left: 10,
+          child: Text("Best Score",style: labelDarkStyle),
+        ),
+        Positioned(
+          top: 55,
+          right: 5,
+          child: Text("${widget._gameState.bestScore}",style: labelDarkStyle),
+          
+        ),
+        Positioned(
+           bottom: 5,
+           left: 10,
+           child: Text("${widget._gameState.coin}", style: labelDarkStyle,),
+        ),
+      ],
+    );
+  }
+  
 }
 
 class MainScenseBackground extends StatefulWidget{
@@ -182,6 +242,8 @@ class MainScenseBackgroundState extends State<MainScenseBackground>{
 class MainScenseBackgroundNode extends NodeWithSize{
   RepeatImage _background;
   RepeatImage _nebula;
+  Sprite _top;
+  Sprite _bottom;
   MainScenseBackgroundNode() : super(new Size(320.0,320.0)){
     assert(_spriteSheet.image != null);
     _background = new RepeatImage(_imageMap["assets/starfield.png"]);
@@ -189,6 +251,23 @@ class MainScenseBackgroundNode extends NodeWithSize{
 
     _nebula = new RepeatImage(_imageMap["assets/nebula.png"]);
     addChild(_nebula);
+
+    StarField stars = new StarField(_spriteSheet, 250,true);
+    addChild(stars);
+
+    _top = new Sprite.fromImage(_imageMap["assets/ui_bg_top.png"]);
+    _top.size = Size(320,120);
+    _top.pivot = Offset(0,0);
+    addChild(_top);
+
+    _bottom = new Sprite.fromImage(_imageMap["assets/ui_bg_bottom.png"]);
+    _bottom.size = Size(320,50);
+    _bottom.pivot = Offset(0,1);
+    addChild(_bottom);
+  }
+
+  void spriteBoxPerformedLayout(){
+    _bottom.position = Offset(0,spriteBox.visibleArea.size.height);
   }
   
   @override

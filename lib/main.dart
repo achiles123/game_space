@@ -150,8 +150,13 @@ class MainScenseState extends State<MainScense>{
                   children: <Widget>[
                     SizedBox(
                       width: 320,
-                      height: 120,
+                      height: 105,
                       child: TopBar(_gameState,_spriteSheetUI),
+                    ),
+                    SizedBox(
+                      width: 320,
+                      height: 70,
+                      child: BottomBar(_gameState,_spriteSheetUI)
                     ),
                   ],
                 ),
@@ -185,35 +190,59 @@ class TopBarState extends State<TopBar>{
     return Stack(
       children: <Widget>[
         Positioned(
-          top: 20,
+          top: 15,
           left: 10,
           child: Text("Last Score",style: labelDarkStyle,),
         ),
         Positioned(
-          top: 20,
+          top: 15,
           right: 5,
           child: Text("${widget._gameState.lastScore}",style: labelDarkStyle),
         ),
         Positioned(
-          top: 55,
+          top: 50,
           left: 10,
           child: Text("Best Score",style: labelDarkStyle),
         ),
         Positioned(
-          top: 55,
+          top: 50,
           right: 5,
           child: Text("${widget._gameState.bestScore}",style: labelDarkStyle),
           
         ),
         Positioned(
-           bottom: 5,
+           bottom: 0,
            left: 10,
+           child: TextureImage(height: 25,width: 15,texture: widget._uiSheet["icn_crystal.png"],),
+        ),
+        Positioned(
+           bottom: 0,
+           left: 30,
            child: Text("${widget._gameState.coin}", style: labelDarkStyle,),
         ),
       ],
     );
   }
   
+}
+
+class BottomBar extends StatefulWidget{
+  @override
+  State<StatefulWidget> createState() {
+    // TODO: implement createState
+    return null;
+  }
+}
+
+class BottomBarState extends State<BottomBar>{
+  @override
+  Widget build(BuildContext context){
+    return Stack(
+      children: <Widget>[
+
+      ],
+    );
+  }
 }
 
 class MainScenseBackground extends StatefulWidget{
@@ -256,12 +285,12 @@ class MainScenseBackgroundNode extends NodeWithSize{
     addChild(stars);
 
     _top = new Sprite.fromImage(_imageMap["assets/ui_bg_top.png"]);
-    _top.size = Size(320,120);
+    _top.size = Size(320,100);
     _top.pivot = Offset(0,0);
     addChild(_top);
 
     _bottom = new Sprite.fromImage(_imageMap["assets/ui_bg_bottom.png"]);
-    _bottom.size = Size(320,50);
+    _bottom.size = Size(320,70);
     _bottom.pivot = Offset(0,1);
     addChild(_bottom);
   }

@@ -14,3 +14,4 @@ part 'GameObject.dart';
 part 'CoordinateSystem.dart';
 part 'RenderCoordinateSystem.dart';
 part 'RepeatImage.dart';
+part 'StarField.dart';

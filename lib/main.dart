@@ -182,6 +182,9 @@ class MainScenseBackgroundState extends State<MainScenseBackground>{
 class MainScenseBackgroundNode extends NodeWithSize{
   RepeatImage _background;
   RepeatImage _nebula;
+  Sprite _bgTop;
+  Sprite _bgBottom;
+
   MainScenseBackgroundNode() : super(new Size(320.0,320.0)){
     assert(_spriteSheet.image != null);
     _background = new RepeatImage(_imageMap["assets/starfield.png"]);
@@ -189,6 +192,24 @@ class MainScenseBackgroundNode extends NodeWithSize{
 
     _nebula = new RepeatImage(_imageMap["assets/nebula.png"]);
     addChild(_nebula);
+
+    StarField starField = StarField(_spriteSheet,150,true);
+    addChild(starField);
+
+    _bgTop = new Sprite.fromImage(_imageMap["assets/ui_bg_top.png"]);
+    _bgTop.pivot = Offset.zero;
+    _bgTop.size = new Size(320.0, 108.0);
+    addChild(_bgTop);
+
+    _bgBottom = new Sprite.fromImage(_imageMap["assets/ui_bg_bottom.png"]);
+    _bgBottom.pivot = new Offset(0.0, 1.0);
+    _bgBottom.size = new Size(320.0, 97.0);
+    _bgBottom.position = new Offset(0.0, this.skewY);
+    addChild(_bgBottom);
+    
+  }
+  void spriteBoxPerformedLayout() {
+    _bgBottom.position = new Offset(0.0, spriteBox.visibleArea.size.height);
   }
   
   @override

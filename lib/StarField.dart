@@ -1,62 +1,61 @@
 part of game;
 
 class StarField extends NodeWithSize{
+  SpriteSheet _spriteSheet;
   ui.Image _image;
-  SpriteSheet _sprite;
-  int _numberStar;
-  bool _scroll;
-  Paint _paint;
-  List<Offset> _positions;
+  bool _scrolling;
+  int _numStars;
+
   List<Rect> _rects;
+  List<Offset> _positions;
   List<Color> _colors;
   List<double> _scales;
-  double _padding = 5;
-  double _width = 0;
-  double _height = 0;
-  StarField(this._sprite,this._numberStar,[this._scroll=false]) : super(Size.zero){
-    _image = _sprite.image;
+
+  Paint _paint;
+
+  StarField(this._spriteSheet,this._numStars,[this._scrolling = false]) : super(Size.zero){
+    _image = _spriteSheet.image;
     _paint = new Paint();
   }
 
   void addStars(){
-    _positions = new List<Offset>();
     _rects = new List<Rect>();
+    _positions = new List<Offset>();
     _colors = new List<Color>();
     _scales = new List<double>();
     Size size = spriteBox.visibleArea.size;
-    _width = size.width - _padding*2;
-    _height = size.height;
-    for(int i=0;i<_numberStar;i++){
-      _positions.add( Offset(_padding + _width*randomDouble(),_height*randomDouble()));
-      _rects.add(_sprite["star_"+randomInt(2).toString()+".png"].frame);
-      _scales.add(randomDouble()*0.4);
-      _colors.add(new Color.fromARGB((255*(randomDouble()*0.5+0.5)).toInt(), 255, 255, 255));
+
+    for(int i=0;i<_numStars;i++){
+      _rects.add(_spriteSheet["star_"+randomInt(2).toString()+".png"].frame);
+      _positions.add(Offset(size.width*randomDouble(),size.height*randomDouble()));
+      _colors.add(Color.fromARGB((randomInt(255)*(randomDouble() * 0.5 + 0.5)).toInt(), 255, 255, 255));
+      _scales.add(randomDouble()*0.43);
     }
   }
-
+  
   @override
   void spriteBoxPerformedLayout(){
     addStars();
   }
 
   void paint(Canvas canvas){
-    List<RSTransform> transforms = new List<RSTransform>();
-    
-    for(int i=0;i<_numberStar;i++){
-      double a = _scales[i];
-      transforms.add(new RSTransform(_scales[i], 0, _positions[i].dx,_positions[i].dy));
+    List<RSTransform> transforms = new List<RSTransform>();  
+    for(int i=0;i<_numStars;i++){
+      RSTransform transform = new RSTransform(_scales[i], 0, _positions[i].dx, _positions[i].dy);
+      transforms.add(transform);
     }
     canvas.drawAtlas(_image, transforms, _rects, _colors, BlendMode.modulate, null, _paint);
   }
 
   void update(double dt){
-    if(_scroll == true){
-      for(int i=0;i<_numberStar;i++){
-        double dx = _positions[i].dx;
-        double dy = _positions[i].dy + dt*50;
-        if(dy > _height)
-          dy -= _height;
-        _positions[i] = Offset(dx,dy);
+    if(_scrolling == true){
+      Size size = spriteBox.visibleArea.size;
+      for(int i=0;i<_numStars;i++){
+        double dx= _positions[i].dx;
+        double dy = _positions[i].dy;
+        if(dy > size.height)
+          dy -= size.height;
+        _positions[i] = Offset(dx,dy + dt*50);
       }
     }
   }

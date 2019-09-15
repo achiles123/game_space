@@ -145,13 +145,102 @@ class MainScenseState extends State<MainScense>{
           },
           child: Stack(
             children: <Widget>[
-                MainScenseBackground()
+                MainScenseBackground(),
+                Column(
+                  children: <Widget>[
+                    SizedBox(
+                      width: 320,
+                      height: 105,
+                      child: TopBar(_gameState,_spriteSheetUI),
+                    ),
+                    SizedBox(
+                      width: 320,
+                      height: 70,
+                      child: BottomBar(_gameState,_spriteSheetUI)
+                    ),
+                  ],
+                ),
             ],
           ),
         )
         
         
       ),
+    );
+  }
+}
+
+class TopBar extends StatefulWidget{
+  PersistantGameState _gameState;
+  SpriteSheet _uiSheet;
+  TopBar(this._gameState,this._uiSheet);
+
+  @override
+  State<StatefulWidget> createState() {
+    // TODO: implement createState
+    return new TopBarState();
+  }
+  
+}
+
+class TopBarState extends State<TopBar>{
+  @override
+  Widget build(BuildContext context) {
+    // TODO: implement build
+    return Stack(
+      children: <Widget>[
+        Positioned(
+          top: 15,
+          left: 10,
+          child: Text("Last Score",style: labelDarkStyle,),
+        ),
+        Positioned(
+          top: 15,
+          right: 5,
+          child: Text("${widget._gameState.lastScore}",style: labelDarkStyle),
+        ),
+        Positioned(
+          top: 50,
+          left: 10,
+          child: Text("Best Score",style: labelDarkStyle),
+        ),
+        Positioned(
+          top: 50,
+          right: 5,
+          child: Text("${widget._gameState.bestScore}",style: labelDarkStyle),
+          
+        ),
+        Positioned(
+           bottom: 0,
+           left: 10,
+           child: TextureImage(height: 25,width: 15,texture: widget._uiSheet["icn_crystal.png"],),
+        ),
+        Positioned(
+           bottom: 0,
+           left: 30,
+           child: Text("${widget._gameState.coin}", style: labelDarkStyle,),
+        ),
+      ],
+    );
+  }
+  
+}
+
+class BottomBar extends StatefulWidget{
+  @override
+  State<StatefulWidget> createState() {
+    // TODO: implement createState
+    return null;
+  }
+}
+
+class BottomBarState extends State<BottomBar>{
+  @override
+  Widget build(BuildContext context){
+    return Stack(
+      children: <Widget>[
+
+      ],
     );
   }
 }
@@ -182,9 +271,8 @@ class MainScenseBackgroundState extends State<MainScenseBackground>{
 class MainScenseBackgroundNode extends NodeWithSize{
   RepeatImage _background;
   RepeatImage _nebula;
-  Sprite _bgTop;
-  Sprite _bgBottom;
-
+  Sprite _top;
+  Sprite _bottom;
   MainScenseBackgroundNode() : super(new Size(320.0,320.0)){
     assert(_spriteSheet.image != null);
     _background = new RepeatImage(_imageMap["assets/starfield.png"]);
@@ -193,23 +281,22 @@ class MainScenseBackgroundNode extends NodeWithSize{
     _nebula = new RepeatImage(_imageMap["assets/nebula.png"]);
     addChild(_nebula);
 
-    StarField starField = StarField(_spriteSheet,150,true);
-    addChild(starField);
+    StarField stars = new StarField(_spriteSheet, 250,true);
+    addChild(stars);
 
-    _bgTop = new Sprite.fromImage(_imageMap["assets/ui_bg_top.png"]);
-    _bgTop.pivot = Offset.zero;
-    _bgTop.size = new Size(320.0, 108.0);
-    addChild(_bgTop);
+    _top = new Sprite.fromImage(_imageMap["assets/ui_bg_top.png"]);
+    _top.size = Size(320,100);
+    _top.pivot = Offset(0,0);
+    addChild(_top);
 
-    _bgBottom = new Sprite.fromImage(_imageMap["assets/ui_bg_bottom.png"]);
-    _bgBottom.pivot = new Offset(0.0, 1.0);
-    _bgBottom.size = new Size(320.0, 97.0);
-    _bgBottom.position = new Offset(0.0, this.skewY);
-    addChild(_bgBottom);
-    
+    _bottom = new Sprite.fromImage(_imageMap["assets/ui_bg_bottom.png"]);
+    _bottom.size = Size(320,70);
+    _bottom.pivot = Offset(0,1);
+    addChild(_bottom);
   }
-  void spriteBoxPerformedLayout() {
-    _bgBottom.position = new Offset(0.0, spriteBox.visibleArea.size.height);
+
+  void spriteBoxPerformedLayout(){
+    _bottom.position = Offset(0,spriteBox.visibleArea.size.height);
   }
   
   @override

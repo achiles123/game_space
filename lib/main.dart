@@ -151,12 +151,17 @@ class MainScenseState extends State<MainScense>{
                     SizedBox(
                       width: 320,
                       height: 105,
-                      child: TopBar(_gameState,_spriteSheetUI),
+                      child: TopBar(_spriteSheetUI),
                     ),
-                    SizedBox(
+                    Expanded(
+                      child: SizedBox(
+                        child: Container(),
+                      ),
+                    ),
+                    Container(
                       width: 320,
                       height: 70,
-                      child: BottomBar(_gameState,_spriteSheetUI)
+                      child: BottomBar(_spriteSheetUI)
                     ),
                   ],
                 ),
@@ -166,81 +171,6 @@ class MainScenseState extends State<MainScense>{
         
         
       ),
-    );
-  }
-}
-
-class TopBar extends StatefulWidget{
-  PersistantGameState _gameState;
-  SpriteSheet _uiSheet;
-  TopBar(this._gameState,this._uiSheet);
-
-  @override
-  State<StatefulWidget> createState() {
-    // TODO: implement createState
-    return new TopBarState();
-  }
-  
-}
-
-class TopBarState extends State<TopBar>{
-  @override
-  Widget build(BuildContext context) {
-    // TODO: implement build
-    return Stack(
-      children: <Widget>[
-        Positioned(
-          top: 15,
-          left: 10,
-          child: Text("Last Score",style: labelDarkStyle,),
-        ),
-        Positioned(
-          top: 15,
-          right: 5,
-          child: Text("${widget._gameState.lastScore}",style: labelDarkStyle),
-        ),
-        Positioned(
-          top: 50,
-          left: 10,
-          child: Text("Best Score",style: labelDarkStyle),
-        ),
-        Positioned(
-          top: 50,
-          right: 5,
-          child: Text("${widget._gameState.bestScore}",style: labelDarkStyle),
-          
-        ),
-        Positioned(
-           bottom: 0,
-           left: 10,
-           child: TextureImage(height: 25,width: 15,texture: widget._uiSheet["icn_crystal.png"],),
-        ),
-        Positioned(
-           bottom: 0,
-           left: 30,
-           child: Text("${widget._gameState.coin}", style: labelDarkStyle,),
-        ),
-      ],
-    );
-  }
-  
-}
-
-class BottomBar extends StatefulWidget{
-  @override
-  State<StatefulWidget> createState() {
-    // TODO: implement createState
-    return null;
-  }
-}
-
-class BottomBarState extends State<BottomBar>{
-  @override
-  Widget build(BuildContext context){
-    return Stack(
-      children: <Widget>[
-
-      ],
     );
   }
 }

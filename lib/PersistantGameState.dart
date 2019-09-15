@@ -7,22 +7,26 @@ import 'package:path_provider/path_provider.dart';
 class PersistantGameState{
   int coin = 0;
   List<int> _powerupLevels = <int>[0, 0, 0, 0];
-  int _currentStartingLevel;
-  int maxStartingLevel = 100;
+  int _currentStartingLevel = 0;
+  int maxStartingLevel = 9;
   int laserLevel;
   int maxLaserLevel = 100;
   int lastScore = 0;
   int bestScore = 0;
   int get currentStartingLevel => _currentStartingLevel;
+  static final PersistantGameState _gameState = new PersistantGameState._internal();
+
   set currentStartingLevel(int level){
     if(level <= maxStartingLevel && level >=0 ){
       _currentStartingLevel = level;
     }
   }
 
-  PersistantGameState(){
-
+  factory PersistantGameState(){
+    return _gameState;
   }
+
+PersistantGameState._internal();
 
   Future load() async{
     String dataDir = (await getApplicationDocumentsDirectory()).path;
@@ -32,7 +36,7 @@ class PersistantGameState{
       JsonDecoder decoder = new JsonDecoder();
       Map data = decoder.convert(dataString);
       coin = data["coin"];
-      _powerupLevels = data["powerupLevels"];
+      _powerupLevels = (decoder.convert(data["powerupLevels"].toString()) as List<dynamic>).cast<int>();
       _currentStartingLevel = data["currentStartingLevel"];
       maxStartingLevel = data["maxStartingLevel"];
       laserLevel = data["laserLevel"];
@@ -101,7 +105,7 @@ class PersistantGameState{
   }
 
   void reachedLevel(int level) {
-    if (level < maxStartingLevel) {
+    if (level < maxStartingLevel && level >= 0) {
       _currentStartingLevel = level;
     }
     store();

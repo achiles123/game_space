@@ -9,7 +9,7 @@ class PersistantGameState{
   List<int> _powerupLevels = <int>[0, 0, 0, 0];
   int _currentStartingLevel = 0;
   int maxStartingLevel = 9;
-  int laserLevel;
+  int laserLevel = 1;
   int maxLaserLevel = 100;
   int lastScore = 0;
   int bestScore = 0;
@@ -108,6 +108,15 @@ PersistantGameState._internal();
     if (level < maxStartingLevel && level >= 0) {
       _currentStartingLevel = level;
     }
+    store();
+  }
+
+  void addCoin(int number){
+    coin += number;
+  }
+
+  void setLaserLevel(int number){
+    laserLevel = number;
     store();
   }
 }

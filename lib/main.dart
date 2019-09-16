@@ -155,7 +155,7 @@ class MainScenseState extends State<MainScense>{
                     ),
                     Expanded(
                       child: SizedBox(
-                        child: Container(),
+                        child: MenuCenter(_spriteSheet,_spriteSheetUI),
                       ),
                     ),
                     Container(

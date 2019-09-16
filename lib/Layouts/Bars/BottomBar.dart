@@ -10,7 +10,7 @@ class BottomBar extends StatefulWidget{
   @override
   State<StatefulWidget> createState() {
     // TODO: implement createState
-    return BottomBarState();;
+    return BottomBarState();
   }
 }
 
@@ -41,7 +41,6 @@ class BottomBarState extends State<BottomBar>{
           left: 75,
           top: 7,
           child: GestureDetector(
-            behavior: HitTestBehavior.translucent,
             onTap: (){
               setState(() {
                 widget._gameState.reachedLevel(widget._gameState.currentStartingLevel + 1);
@@ -60,7 +59,6 @@ class BottomBarState extends State<BottomBar>{
           left: 75,
           top: 40,
           child: GestureDetector(
-            behavior: HitTestBehavior.deferToChild,
             onTap: (){
               setState(() {
                 widget._gameState.reachedLevel(widget._gameState.currentStartingLevel - 1);
@@ -71,6 +69,40 @@ class BottomBarState extends State<BottomBar>{
                 width: 25,
                 texture: widget.spriteSheet["btn_level_down.png"],
               ),
+          )
+        ),
+        Positioned(
+          left: 110,
+          top: 7,
+          child: GestureDetector(
+            onTap: (){
+              setState(() {
+                widget._gameState.reachedLevel(widget._gameState.currentStartingLevel - 1);
+              }); 
+            },
+            child: SizedBox(
+              height: 60,
+              width: MediaQuery.of(context).size.width/2,
+              child: Stack(
+                children: <Widget>[
+                  TextureImage(
+                    height: MediaQuery.of(context).size.height,
+                    width: MediaQuery.of(context).size.width,
+                    texture: widget.spriteSheet["btn_play.png"],
+                  ),
+                  Container(
+                    height: MediaQuery.of(context).size.height,
+                    width: MediaQuery.of(context).size.width,
+                    alignment: Alignment.center,
+                    color: Colors.transparent,
+                    child: Text("PLAY",style: TextStyle(fontSize: 28),),
+                  )
+                ],
+              ),
+            )
+            
+            
+            
           )
         ),
       ],

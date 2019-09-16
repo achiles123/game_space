@@ -27,6 +27,7 @@ Future main() async {
   WidgetsFlutterBinding.ensureInitialized();
   SystemChrome.setEnabledSystemUIOverlays(<SystemUiOverlay>[]);
   _gameState = new PersistantGameState();
+  await _gameState.store();
   await _gameState.load();
   _imageMap = new ImageMap(_bundle);
   await _imageMap.load(<String>[

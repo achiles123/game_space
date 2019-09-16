@@ -29,12 +29,14 @@ class MenuCenterState extends State<MenuCenter>{
         Padding(
           padding: EdgeInsets.only(bottom: 10),
             child: GestureDetector(
+            behavior: HitTestBehavior.translucent,
             onTap: (){
               setState(() {
                 widget._gameState.addCoin(10000);
                 widget._gameState.upgradeLaser();
               });
             },
+
             child:  Container(
               width: 150,
               height: 70,
@@ -55,23 +57,19 @@ class MenuCenterState extends State<MenuCenter>{
                       Positioned(
                         top: 30,
                         left: 36,
-                        child: IgnorePointer(
-                          child:  SizedBox(
-                            child: SpriteWidget(LaserDisplay(widget._spriteSheet,widget._gameState.laserLevel)),
-                            width: 26.0,
-                            height: 26.0
-                          )
+                        child: SizedBox(
+                          child: SpriteWidget(LaserDisplay(widget._spriteSheet,widget._gameState.laserLevel)),
+                          width: 26.0,
+                          height: 26.0
                         )
                       ),
                       Positioned(
                         top: 30,
                         right: 9,
-                        child: IgnorePointer(
-                          child:  SizedBox(
-                            child: SpriteWidget(LaserDisplay(widget._spriteSheet,widget._gameState.laserLevel + 1)),
-                            width: 26.0,
-                            height: 26.0
-                          )
+                        child: SizedBox(
+                          child: SpriteWidget(LaserDisplay(widget._spriteSheet,widget._gameState.laserLevel + 1)),
+                          width: 26.0,
+                          height: 26.0
                         )
                       ),
                     ],

@@ -4,6 +4,7 @@ class TopBar extends StatefulWidget{
   PersistantGameState _gameState;
   SpriteSheet _uiSheet;
   TopBar(this._uiSheet){
+    _gameState = new PersistantGameState();
   }
 
   @override
@@ -19,7 +20,6 @@ class TopBarState extends State<TopBar>{
   void initState() {
     // TODO: implement initState
     super.initState();
-
     widget._gameState = new PersistantGameState();
   }
   @override

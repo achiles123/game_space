@@ -30,22 +30,22 @@ class TopBarState extends State<TopBar>{
         Positioned(
           top: 15,
           left: 10,
-          child: Text("Last Score",style: labelDarkStyle,),
+          child: Text("Last Score",style: labelDarkStyle(),),
         ),
         Positioned(
           top: 15,
           right: 5,
-          child: Text("${widget._gameState.lastScore}",style: labelDarkStyle),
+          child: Text("${widget._gameState.lastScore}",style: labelDarkStyle()),
         ),
         Positioned(
           top: 50,
           left: 10,
-          child: Text("Best Score",style: labelDarkStyle),
+          child: Text("Best Score",style: labelDarkStyle()),
         ),
         Positioned(
           top: 50,
           right: 5,
-          child: Text("${widget._gameState.bestScore}",style: labelDarkStyle),
+          child: Text("${widget._gameState.bestScore}",style: labelDarkStyle()),
           
         ),
         Positioned(
@@ -56,7 +56,7 @@ class TopBarState extends State<TopBar>{
         Positioned(
            bottom: 0,
            left: 30,
-           child: Text("${widget._gameState.coin}", style: labelDarkStyle,),
+           child: Text("${widget._gameState.coin}", style: labelDarkStyle(),),
         ),
       ],
     );

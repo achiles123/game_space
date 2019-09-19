@@ -186,9 +186,13 @@ class MenuCenterState extends State<MenuCenter>{
                   });
                   widget.powerUpdate();
                 },
+
                 child: Container(
                   width: powerSize.width,
                   height: powerSize.height,
+                  decoration: BoxDecoration(
+
+                  ),
                   child: LayoutBuilder(builder: (layoutContext,constrains){
                     return Stack(
                       children: <Widget>[

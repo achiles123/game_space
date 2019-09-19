@@ -77,7 +77,7 @@ class BottomBarState extends State<BottomBar>{
           child: GestureDetector(
             onTap: (){
               setState(() {
-                widget._gameState.reachedLevel(widget._gameState.currentStartingLevel - 1);
+                Navigator.of(context).pushNamed("/game");
               }); 
             },
             child: SizedBox(

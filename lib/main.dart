@@ -13,9 +13,7 @@ SpriteSheet _spriteSheetUI;
 ImageMap _imageMap;
 PersistantGameState _gameState;
 GlobalKey<NavigatorState> _navigatorKey = new GlobalKey<NavigatorState>();
-double bootSpeed = 1;
 typedef void SelectTabCallback(int index);
-typedef void UpgradePowerUpCallBack(PowerUpType type);
 
 AssetBundle _initBundle(){
   if(rootBundle != null)
@@ -80,7 +78,7 @@ class GameDemoState extends State<GameDemo> {
         child: Navigator(
           onGenerateRoute: (routes){
             switch(routes.name){
-              case "/game":break;
+              case "/game":return _buildGameScenseRoute();
               default:return _buildMainSceneRoute();
             }
           },
@@ -93,7 +91,9 @@ class GameDemoState extends State<GameDemo> {
   PageRoute _buildMainSceneRoute(){
     return new MaterialPageRoute(builder: (context){
       return MainScense(
-        gameState: _gameState,
+        imageMap: _imageMap,
+        spriteSheet: _spriteSheet,
+        spriteSheetUI: _spriteSheetUI,
         onUpgradeLaser: (){
 
         },
@@ -109,132 +109,21 @@ class GameDemoState extends State<GameDemo> {
       );
     });
   }
-  
-}
 
-class MainScense extends StatefulWidget{
-  PersistantGameState gameState;
-  UpgradePowerUpCallBack onUpgradePowerUp;
-  VoidCallback onUpgradeLaser;
-  VoidCallback onStartLevelUp;
-  VoidCallback onStartLevelDown;
-
-  MainScense({this.gameState,this.onUpgradePowerUp,this.onUpgradeLaser,this.onStartLevelUp,this.onStartLevelDown});
-  
-
-  @override
-  State<StatefulWidget> createState() {
-    // TODO: implement createState
-    return new MainScenseState();
-  }
-}
-
-class MainScenseState extends State<MainScense>{
-  @override
-  Widget build(BuildContext context) {
-    // TODO: implement build
-    return new CoordinateSystem(
-      systemSize: Size(360.0,360.0),
-      child: DefaultTextStyle(
-        style: TextStyle(fontFamily: "Orbitron", fontSize:20.0),
-        child: GestureDetector(
-          onTap: (){
-            setState(() {
-              bootSpeed += 0.1; 
-            });
-          },
-          child: Stack(
-            children: <Widget>[
-                MainScenseBackground(),
-                Column(
-                  children: <Widget>[
-                    SizedBox(
-                      width: 320,
-                      height: 105,
-                      child: TopBar(_spriteSheetUI),
-                    ),
-                    Expanded(
-                      child: SizedBox(
-                        child: MenuCenter(_spriteSheet,_spriteSheetUI,
-                          laserUpdate: ()=>setState((){}),
-                          powerUpdate: ()=>setState((){}),
-                        ),
-                      ),
-                    ),
-                    Container(
-                      width: 320,
-                      height: 70,
-                      child: BottomBar(_spriteSheetUI)
-                    ),
-                  ],
-                ),
-            ],
-          ),
-        )
-        
-        
-      ),
+  PageRoute _buildGameScenseRoute(){
+    return new MaterialPageRoute(
+      builder: (context){
+        return GameScense(
+          imageMap: _imageMap,
+          spriteSheet: _spriteSheet,
+          spriteSheetUI: _spriteSheetUI,
+        );
+      }
     );
   }
-}
-
-class MainScenseBackground extends StatefulWidget{
-  @override
-  State<StatefulWidget> createState() {
-    // TODO: implement createState
-    return new MainScenseBackgroundState();
-  }
-}
-
-class MainScenseBackgroundState extends State<MainScenseBackground>{
-  MainScenseBackgroundNode _backgroundNode;
-  @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-    _backgroundNode = new MainScenseBackgroundNode();
-  }
-  @override
-  Widget build(BuildContext context) {
-    // TODO: implement build
-    return new SpriteWidget(_backgroundNode,SpriteBoxTransformMode.fixedWidth);
-  }
-}
-
-class MainScenseBackgroundNode extends NodeWithSize{
-  RepeatImage _background;
-  RepeatImage _nebula;
-  Sprite _top;
-  Sprite _bottom;
-  MainScenseBackgroundNode() : super(new Size(320.0,320.0)){
-    assert(_spriteSheet.image != null);
-    _background = new RepeatImage(_imageMap["assets/starfield.png"]);
-    addChild(_background);
-
-    _nebula = new RepeatImage(_imageMap["assets/nebula.png"]);
-    addChild(_nebula);
-
-    StarField stars = new StarField(_spriteSheet, 250,true);
-    addChild(stars);
-
-    _top = new Sprite.fromImage(_imageMap["assets/ui_bg_top.png"]);
-    _top.size = Size(320,100);
-    _top.pivot = Offset(0,0);
-    addChild(_top);
-
-    _bottom = new Sprite.fromImage(_imageMap["assets/ui_bg_bottom.png"]);
-    _bottom.size = Size(320,70);
-    _bottom.pivot = Offset(0,1);
-    addChild(_bottom);
-  }
-
-  void spriteBoxPerformedLayout(){
-    _bottom.position = Offset(0,spriteBox.visibleArea.size.height);
-  }
   
-  @override
-  void update(double dt){
-    _background.move(bootSpeed*10.0*dt);
-    _nebula.move(bootSpeed*100.0*dt);
-  }
 }
+
+
+
+

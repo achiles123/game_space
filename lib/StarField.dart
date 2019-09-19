@@ -27,7 +27,7 @@ class StarField extends NodeWithSize{
 
     for(int i=0;i<_numStars;i++){
       _rects.add(_spriteSheet["star_"+randomInt(2).toString()+".png"].frame);
-      _positions.add(Offset(size.width*randomDouble(),size.height*randomDouble()));
+      _positions.add(Offset(size.width*randomDouble(),size.height*1.0*randomDouble()));
       _colors.add(Color.fromARGB((randomInt(255)*(randomDouble() * 0.5 + 0.5)).toInt(), 255, 255, 255));
       _scales.add(randomDouble()*0.43);
     }
@@ -54,7 +54,7 @@ class StarField extends NodeWithSize{
         double dx= _positions[i].dx;
         double dy = _positions[i].dy;
         if(dy > size.height)
-          dy -= size.height;
+          dy = -dt*50-15;
         _positions[i] = Offset(dx,dy + dt*50);
       }
     }

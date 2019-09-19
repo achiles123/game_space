@@ -26,3 +26,5 @@ part 'Layouts/Bars/TopBar.dart';
 part 'Layouts/Bars/BottomBar.dart';
 part 'Layouts/MenuCenter.dart';
 part 'Layouts/LaserDisplay.dart';
+part 'Layouts/MainScense.dart';
+part 'Layouts/GameScense.dart';
